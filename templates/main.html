@@ -7,10 +7,11 @@
     const shapes = JSON.parse('{{ shapes | safe }}');
     console.log(shapes)
 </script>
-<script type = "module" src="{% static 'js/main.js' %}" defer> </script>
+<script type = "module" src="{% static 'shapes/js/main.js' %}" defer> </script>
 {% endblock scripts %}
 
 {% block content %}
 
     <div id="scene-box"></div>
+    <div class="loading" id="js-loader"><div class="loader"></div></div>
 {% endblock %}
