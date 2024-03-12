@@ -150,6 +150,14 @@ loader.load(MODEL_PATH, function (gltf) {
   function playOnClick() {  //plays random animation when clicked
     let anim = Math.floor(Math.random() * possibleAnims.length) + 0;
     playModifierAnimation(idleAction, 0.25, possibleAnims[anim], 0.25);
+    //0 is search body
+    //1 is skip rope
+    //2 is dance
+    //3 is jump
+    //4 is look around
+    //5 is shrug
+    //6 is wave hi
+    //7 is golf swing
   }
   function playModifierAnimation(from, fSpeed, to, tSpeed) {
     to.setLoop(THREE.LoopOnce);
@@ -303,4 +311,4 @@ scene.add(dirLight);
 const pointLight = new THREE.PointLight("#ffffff", 1, 100);
 pointLight.position.set(50, 50, 50);
 scene.add(pointLight);
-console.log("main.js loaded");
+console.log("main.js loa");
