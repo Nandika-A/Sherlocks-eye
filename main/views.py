@@ -38,3 +38,13 @@ def get_llm_output(text_data):
 
 def get_llm_anim_no(text_data):
     return 1
+
+from transformers import pipeline
+from PIL import Image
+import io
+
+def image_to_text(image_data):
+    image_to_text = pipeline("image-to-text", model="nlpconnect/vit-gpt2-image-captioning")
+    with Image.open(io.BytesIO(image_data)) as img:#giving binary data as image
+        result=image_to_text(img)[0]["generated_text"]
+    return (result)
