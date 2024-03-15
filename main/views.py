@@ -9,4 +9,7 @@ def test_emotions(request):
 def get_llm_output(text_data):
 
     #dummy info
-    return text_data[0];
+    return text_data[0]
+
+def get_llm_anim_no(text_data):
+    return 1

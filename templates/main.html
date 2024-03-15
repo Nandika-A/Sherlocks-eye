@@ -5,7 +5,6 @@
 <script src="https://cdn.jsdelivr.net/npm/three@0.121.1/build/three.min.js"></script>
 
 <script type = "module" src="{% static 'js/main.js' %}" defer> </script>
-
 {% endblock scripts %}
 
 {% block content %}
@@ -16,31 +15,44 @@
         <button id="send-message">Send</button>
     </div>
     <div class="loading" id="js-loader"><div class="loader"></div></div>
+    
     <script>
         
         var ws = new WebSocket("ws://localhost:8000/practice/");
-        
+        var animNo;
         //onmessage waits for coonection
         ws.onmessage = function(event) {
-        var messages = document.getElementById('messages');
-        var message = document.createElement('p');
-        message.textContent = event.data;
-        messages.appendChild(message);
+            var messages = document.getElementById('messages');
+            var message = document.createElement('p');
+            
+            try {
+                let data = JSON.parse(event.data);
+                console.log("data is ",data);
+                animNo = data.animNo; //animNo is animation number
+                message.textContent = data.llm_out;
+                messages.appendChild(message);
+                console.log("animNo is ",data.animNo);
+                playWithLLM(animNo);
+            } catch (error) {
+                console.error("Error parsing JSON:", event.data);
+                console.error(error);
+            }
         };
     
         var messageInput = document.getElementById('message-input');
         var sendMessageButton = document.getElementById('send-message');
     
         sendMessageButton.addEventListener('click', function() {
-        var message = messageInput.value;
-        
-        if (message.trim() !== '') { // Check if message is not empty
-            console.log(message);
-            ws.send(message);
-            messageInput.value = ''; 
-        }
+            var message = messageInput.value;
+            
+            if (message.trim() !== '') { // Check if message is not empty
+                console.log(message);
+                ws.send(message);
+                messageInput.value = ''; 
+            }
         });
         
     
     </script>
+    
 {% endblock %}

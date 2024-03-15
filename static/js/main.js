@@ -159,6 +159,11 @@ loader.load(MODEL_PATH, function (gltf) {
     //6 is wave hi
     //7 is golf swing
   }
+  function playWithLLM(animNo){
+    
+    playModifierAnimation(idleAction, 0.25, possibleAnims[animNo], 0.25);
+
+  }
   function playModifierAnimation(from, fSpeed, to, tSpeed) {
     to.setLoop(THREE.LoopOnce);
     to.reset();
@@ -231,44 +236,23 @@ loader.load(MODEL_PATH, function (gltf) {
       moveJoint(mousecoords, waist, 30);
   }
   });
-
-  // window.addEventListener(
-  //   "dblclick",
-  //   function (event) {
-  //     //get the angle and rotate character
-  //     var vector = new THREE.Vector3();
-  //     vector.set(
-  //       (event.clientX / window.innerWidth) * 2 - 1,
-  //       -(event.clientY / window.innerHeight) * 2 + 1,
-  //       0.5
-  //     );
-  //     vector.unproject(camera);
-  //     var dir = vector.sub(camera.position).normalize();
-  //     var distance = -camera.position.z / dir.z;
-  //     var pos = camera.position.clone().add(dir.multiplyScalar(distance));
-  //     var angle = Math.atan2(
-  //       pos.y - gltf.scene.position.y,
-  //       pos.x - gltf.scene.position.x
-  //     );
-  //     gltf.scene.rotation.y = angle >= 0 ? angle : angle + 2 * Math.PI;
-
-  //     if (mixer) {
-  //       idleAction.enabled = false;
-  //       shootAction.reset().play();
-  //       shootAction.setLoop(THREE.LoopOnce);
-  //       shootAction.clampWhenFinished = true;
-  //     }
-  //   },
-  //   false
-  // );
-  // mixer.addEventListener("finished", function (e) {
-  //   if (e.action === shootAction) {
-  //     shootAction.crossFadeTo(idleAction, 1, true); // idle animation when the shoot animation is finished.
-  //     //crossfade make animation smoother
-  //     shootAction.stop();
-  //   }
-  // });
 });
+
+function playModifierAnimation(from, fSpeed, to, tSpeed) {
+  to.setLoop(THREE.LoopOnce);
+  to.reset();
+  to.play();
+  from.crossFadeTo(to, fSpeed, true);
+  setTimeout(function() {
+    from.enabled = true;
+    to.crossFadeTo(from, tSpeed, true);
+    currentlyAnimating = false;
+  }, to._clip.duration * 1000 - ((tSpeed + fSpeed) * 1000));
+}
+window.playWithLLM=function (animNo){
+  playModifierAnimation(idleAction, 0.25, possibleAnims[animNo], 0.25);
+}
+
 
 const clock = new THREE.Clock();
 function animate() {
