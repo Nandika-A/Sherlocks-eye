@@ -3,15 +3,56 @@
 
 {% block scripts %}
 <script src="https://cdn.jsdelivr.net/npm/three@0.121.1/build/three.min.js"></script>
-<script>
-    const shapes = JSON.parse('{{ shapes | safe }}');
-    console.log(shapes)
-</script>
-<script type = "module" src="{% static 'shapes/js/main.js' %}" defer> </script>
+
+<script type = "module" src="{% static 'js/main.js' %}" defer> </script>
 {% endblock scripts %}
 
 {% block content %}
 
     <div id="scene-box"></div>
+    <div id="messages">
+        <input type="text" id="message-input" placeholder="Enter message">
+        <button id="send-message">Send</button>
+    </div>
     <div class="loading" id="js-loader"><div class="loader"></div></div>
+    
+    <script>
+        
+        var ws = new WebSocket("ws://localhost:8000/practice/");
+        var animNo;
+        //onmessage waits for coonection
+        ws.onmessage = function(event) {
+            var messages = document.getElementById('messages');
+            var message = document.createElement('p');
+            
+            try {
+                let data = JSON.parse(event.data);
+                console.log("data is ",data);
+                animNo = data.animNo; //animNo is animation number
+                message.textContent = data.llm_out;
+                messages.appendChild(message);
+                console.log("animNo is ",data.animNo);
+                playWithLLM(animNo);
+            } catch (error) {
+                console.error("Error parsing JSON:", event.data);
+                console.error(error);
+            }
+        };
+    
+        var messageInput = document.getElementById('message-input');
+        var sendMessageButton = document.getElementById('send-message');
+    
+        sendMessageButton.addEventListener('click', function() {
+            var message = messageInput.value;
+            
+            if (message.trim() !== '') { // Check if message is not empty
+                console.log(message);
+                ws.send(message);
+                messageInput.value = ''; 
+            }
+        });
+        
+    
+    </script>
+    
 {% endblock %}

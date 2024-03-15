@@ -27,3 +27,13 @@ def get_session_data(request):
     for s in sessions:
         print(s.get_decoded())
     return HttpResponse(sessions)
+    #return HttpResponse("Emotion set to happy")
+    return render(request, 'main.html')
+
+def get_llm_output(text_data):
+
+    #dummy info
+    return text_data[0]
+
+def get_llm_anim_no(text_data):
+    return 1
