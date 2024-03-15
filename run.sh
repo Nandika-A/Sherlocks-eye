@@ -1,2 +1,3 @@
 source myworld/bin/activate
-daphne SherlocksEye.asgi:application
+DJANGO_SETTINGS_MODULE=SherlocksEye.settings daphne SherlocksEye.asgi:application
+#daphne SherlocksEye.asgi:application
