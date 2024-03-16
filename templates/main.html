@@ -15,12 +15,15 @@
         <button id="send-message">Send</button>
     </div>
     <div class="loading" id="js-loader"><div class="loader"></div></div>
-    
+    <form id="upload-form">
+        <input type="file" id="image-upload" accept="image/*"> <!-- take image-->
+        <button type="submit">Upload</button>
+    </form>
     <script>
         
         var ws = new WebSocket("ws://localhost:8000/practice/");
         var animNo;
-        //onmessage waits for coonection
+        //onmessage waits for connection
         ws.onmessage = function(event) {
             var messages = document.getElementById('messages');
             var message = document.createElement('p');
@@ -28,11 +31,21 @@
             try {
                 let data = JSON.parse(event.data);
                 console.log("data is ",data);
-                animNo = data.animNo; //animNo is animation number
-                message.textContent = data.llm_out;
+                if (data.animNo) {
+                    animNo = data.animNo; //animNo is animation number
+                    playWithLLM(animNo);
+                    console.log("animNo is ",data.animNo);
+                
+                }
+                if (data.llm_out) {
+                    message.textContent = data.llm_out;
+                }
+                if (data.image_text) {
+                    message.textContent = data.image_text;
+                    console.log("image text is ",data.image_text);
+                }
                 messages.appendChild(message);
-                console.log("animNo is ",data.animNo);
-                playWithLLM(animNo);
+                
             } catch (error) {
                 console.error("Error parsing JSON:", event.data);
                 console.error(error);
@@ -51,7 +64,20 @@
                 messageInput.value = ''; 
             }
         });
-        
+        document.getElementById('upload-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var fileInput = document.getElementById('image-upload');
+            var file = fileInput.files[0];
+            if (file) { // Check if file is not null
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                    var arrayBuffer = event.target.result;
+                    ws.send(arrayBuffer);
+                };
+                reader.readAsArrayBuffer(file);
+                fileInput.value = ''; // Clear the file input
+            }
+        });
     
     </script>
     
