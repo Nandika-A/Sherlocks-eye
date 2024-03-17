@@ -71,12 +71,6 @@ def gen(model,p, maxlen=100, sample=True):
 
 
 
-import os
-
-import zipfile
-with zipfile.ZipFile('/kaggle/working/model.zip', 'r') as zip_ref:
-    zip_ref.extractall('kaggle/working/')
-
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
@@ -98,7 +92,7 @@ def gen(model,p, maxlen=100, sample=True):
 
 from peft import PeftModel
 
-ft_model = PeftModel.from_pretrained(base_model, "/kaggle/working/checkpoint-1000/",torch_dtype=torch.float16,is_trainable=False)
+ft_model = PeftModel.from_pretrained(base_model, "/checkpoint-1000/",torch_dtype=torch.float16,is_trainable=False)
 
 def response(dialogue):
   prompt = f"Instruct: Analyze the following conversation as a detective.\n{dialogue}\nOutput:\n"
