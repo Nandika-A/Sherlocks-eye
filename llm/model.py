@@ -55,7 +55,7 @@ bnb_config = BitsAndBytesConfig(
         bnb_4bit_use_double_quant=False,
     )
 device_map = {"": 0}
-
+model_name='microsoft/phi-2'
 
 # https://ai.stackexchange.com/questions/41485/while-fine-tuning-a-decoder-only-llm-like-llama-on-chat-dataset-what-kind-of-pa
 tokenizer = AutoTokenizer.from_pretrained(model_name,trust_remote_code=True,padding_side="left",add_eos_token=True,add_bos_token=True,use_fast=False)
@@ -87,7 +87,6 @@ base_model = AutoModelForCausalLM.from_pretrained(base_model_id,
                                                       trust_remote_code=True,
                                                       use_auth_token=True)
 
-model_name='microsoft/phi-2'
 eval_tokenizer = AutoTokenizer.from_pretrained(model_name, add_bos_token=True, trust_remote_code=True, use_fast=False)
 eval_tokenizer.pad_token = eval_tokenizer.eos_token
 
