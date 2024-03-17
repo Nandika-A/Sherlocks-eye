@@ -110,5 +110,3 @@ def response(dialogue):
   
   return prefix
 
-print(response("Input here."))
-

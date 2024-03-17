@@ -10,15 +10,18 @@
 {% block content %}
 
     <div id="scene-box"></div>
-    <div id="messages">
+    <form id="messages" method="post" action=".">
+        {% csrf_token %}
         <input type="text" id="message-input" placeholder="Enter message">
         <button id="send-message">Send</button>
-    </div>
+    </form>
     <div class="loading" id="js-loader"><div class="loader"></div></div>
-    <form id="upload-form">
+    <form id="upload-form" method="post" action=".">
+        {% csrf_token %}
         <input type="file" id="image-upload" accept="image/*"> <!-- take image-->
         <button type="submit">Upload</button>
     </form>
+    <div>{{ llm_output }}</div>
     <script>
         
         var ws = new WebSocket("ws://localhost:8000/practice/");
