@@ -3,25 +3,29 @@
 
 {% block scripts %}
 <script src="https://cdn.jsdelivr.net/npm/three@0.121.1/build/three.min.js"></script>
-
 <script type = "module" src="{% static 'js/main.js' %}" defer> </script>
+<head>
+    <title>Home Page</title>
+</head>
 {% endblock scripts %}
 
 {% block content %}
-
-    <div id="scene-box"></div>
-    <form id="messages" method="post" action=".">
-        {% csrf_token %}
-        <input type="text" id="message-input" placeholder="Enter message">
-        <button id="send-message">Send</button>
-    </form>
-    <div class="loading" id="js-loader"><div class="loader"></div></div>
-    <form id="upload-form" method="post" action=".">
-        {% csrf_token %}
-        <input type="file" id="image-upload" accept="image/*"> <!-- take image-->
-        <button type="submit">Upload</button>
-    </form>
-    <div>{{ llm_output }}</div>
+    <div id="container"  style="display: flex; justify-content: flex-end; background-color: #333; color: #fff; font-family: 'Courier New', monospace;">
+        <div id="myThreeJS" >
+            <div id="scene-box"></div>
+        </div>
+        <div id="htmlContent" >
+            <div id="messages" class = "card">
+                <input type="text" id="message-input" placeholder="Enter message">
+                <button id="send-message">Send</button>
+            </div>
+            <div class="loading" id="js-loader"><div class="loader"></div></div>
+            <form id="upload-form">
+                <input type="file" id="image-upload" accept="image/*"> <!-- take image-->
+                <button type="submit">Upload</button>
+            </form>
+        </div>
+    </div>
     <script>
         
         var ws = new WebSocket("ws://localhost:8000/practice/");
@@ -30,7 +34,7 @@
         ws.onmessage = function(event) {
             var messages = document.getElementById('messages');
             var message = document.createElement('p');
-            
+            message.style.color = 'black';
             try {
                 let data = JSON.parse(event.data);
                 console.log("data is ",data);

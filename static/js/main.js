@@ -17,6 +17,7 @@ camera.position.y = -3;
 const currentPath = window.location.pathname;
 console.log(currentPath);
 
+scene.background = null;
 const renderer = new THREE.WebGLRenderer({ alpha: true }); //alpha = true makes background transparent
 renderer.setSize(window.innerWidth, window.innerHeight);
 //renderer.setSize(200, 200); // to make character at bottom
@@ -49,13 +50,13 @@ const stacy_mtl = new THREE.MeshPhongMaterial({
 const loader = new GLTFLoader();
 
 //circle behind her
-let geometry = new THREE.SphereGeometry(8, 32, 32);
-let material = new THREE.MeshBasicMaterial({ color: 0x9bffaf }); // 0xf2ce2e 
-let sphere = new THREE.Mesh(geometry, material);
-sphere.position.z = -15;
-sphere.position.y = -2.5;
-sphere.position.x = -0.25;
-scene.add(sphere);
+// let geometry = new THREE.SphereGeometry(8, 32, 32);
+// let material = new THREE.MeshBasicMaterial({ color: 0x9bffaf }); // 0xf2ce2e 
+// let sphere = new THREE.Mesh(geometry, material);
+// sphere.position.z = -15;
+// sphere.position.y = -2.5;
+// sphere.position.x = -0.25;
+// scene.add(sphere);
 
 const loaderAnim = document.getElementById('js-loader');
 
@@ -70,7 +71,7 @@ loader.load(MODEL_PATH, function (gltf) {
   //loaderAnim.remove();//remove the loading sign once model has been added //doesnt work
 
   gltf.scene.position.y = -11;
-  gltf.scene.scale.set(7, 7, 7);
+  gltf.scene.scale.set(10, 10, 10);
   let fileAnimations = gltf.animations;
 
   mixer = new THREE.AnimationMixer(gltf.scene);
