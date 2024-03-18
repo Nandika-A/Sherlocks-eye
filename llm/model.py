@@ -28,7 +28,7 @@ from datasets import load_dataset
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
-    BitsAndBytesConfig,
+    # BitsAndBytesConfig,
     HfArgumentParser,
     AutoTokenizer,
     TrainingArguments,
@@ -48,12 +48,12 @@ interpreter_login()
 
 
 compute_dtype = getattr(torch, "float16")
-bnb_config = BitsAndBytesConfig(
-        load_in_4bit=True,
-        bnb_4bit_quant_type='nf4',
-        bnb_4bit_compute_dtype=compute_dtype,
-        bnb_4bit_use_double_quant=False,
-    )
+# bnb_config = BitsAndBytesConfig(
+#         load_in_4bit=True,
+#         bnb_4bit_quant_type='nf4',
+#         bnb_4bit_compute_dtype=compute_dtype,
+#         bnb_4bit_use_double_quant=False,
+#     )
 device_map = {"": 0}
 model_name='microsoft/phi-2'
 
@@ -77,9 +77,10 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 base_model_id = "microsoft/phi-2"
 base_model = AutoModelForCausalLM.from_pretrained(base_model_id,
                                                       device_map='auto',
-                                                      quantization_config=bnb_config,
                                                       trust_remote_code=True,
-                                                      use_auth_token=True)
+                                                      use_auth_token=True,
+                                                      offload_folder = 'llm',
+                                                      offload_state_dict = True)
 
 eval_tokenizer = AutoTokenizer.from_pretrained(model_name, add_bos_token=True, trust_remote_code=True, use_fast=False)
 eval_tokenizer.pad_token = eval_tokenizer.eos_token
