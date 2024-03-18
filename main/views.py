@@ -23,10 +23,8 @@ def index(request):
 
 def get_session_data(request):
     from django.contrib.sessions.models import Session
-    index(request)
-    sessions = Session.objects.all()
-    for s in sessions:
-        print(s.get_decoded())
+    #index(request)
+    # 1
     #return HttpResponse(sessions)
     #return HttpResponse("Emotion set to happy")
     return render(request, 'main.html')
@@ -47,4 +45,5 @@ def image_to_text(image_data):
     image_to_text = pipeline("image-to-text", model="nlpconnect/vit-gpt2-image-captioning")
     with Image.open(io.BytesIO(image_data)) as img:#giving binary data as image
         result=image_to_text(img)[0]["generated_text"]
+        print(result)
     return (result)

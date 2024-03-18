@@ -11,7 +11,9 @@ class PracticeConsumer(AsyncJsonWebsocketConsumer):
           if text_data is not None:
                animNo = (get_llm_anim_no(text_data))
                print(animNo)
-               await self.send_json({'llm_out': get_llm_output(text_data),'animNo': animNo})
+               llm_out=get_llm_output(text_data)
+               print(llm_out)
+               await self.send_json({'llm_out':llm_out ,'animNo': animNo})
           elif bytes_data is not None:
                image_data = bytes_data
                result = image_to_text(image_data)

@@ -8,17 +8,22 @@
 {% endblock scripts %}
 
 {% block content %}
-
-    <div id="scene-box"></div>
-    <div id="messages">
-        <input type="text" id="message-input" placeholder="Enter message">
-        <button id="send-message">Send</button>
+    <div id="container"  style="display: flex; justify-content: flex-end; background-color: #333; color: #fff; font-family: 'Courier New', monospace;">
+        <div id="myThreeJS" >
+            <div id="scene-box"></div>
+        </div>
+        <div id="htmlContent" >
+            <div id="messages" class = "card">
+                <input type="text" id="message-input" placeholder="Enter message">
+                <button id="send-message">Send</button>
+            </div>
+            <div class="loading" id="js-loader"><div class="loader"></div></div>
+            <form id="upload-form">
+                <input type="file" id="image-upload" accept="image/*"> <!-- take image-->
+                <button type="submit">Upload</button>
+            </form>
+        </div>
     </div>
-    <div class="loading" id="js-loader"><div class="loader"></div></div>
-    <form id="upload-form">
-        <input type="file" id="image-upload" accept="image/*"> <!-- take image-->
-        <button type="submit">Upload</button>
-    </form>
     <script>
         
         var ws = new WebSocket("ws://localhost:8000/practice/");
@@ -27,7 +32,7 @@
         ws.onmessage = function(event) {
             var messages = document.getElementById('messages');
             var message = document.createElement('p');
-            
+            message.style.color = 'black';
             try {
                 let data = JSON.parse(event.data);
                 console.log("data is ",data);
