@@ -1,7 +1,9 @@
 import requests
+from dotenv import dotenv_values
 
+env_vars = dotenv_values(".env")
 API_URL = "https://api-inference.huggingface.co/models/arpanghoshal/EmoRoBERTa"
-headers = {"Authorization": "Bearer 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"}
+headers = {"Authorization": "Bearer " + env_vars["API_TOKEN"]}
 
 def query(payload):
 	response = requests.post(API_URL, headers=headers, json=payload)
